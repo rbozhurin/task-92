@@ -17,7 +17,6 @@ export default class Notification {
   }
 
   render({ type, price }) {
-    debugger;
     const template = `
 <div class="notification type-${type} ${classNames({
       "is-danger": type === "hawaiian",
