@@ -21,10 +21,9 @@ export default class Notification {
   }
 
   render({ type, price }) {
-    const template = `<div class='notification type-${type.toLowerCase()}${classNames(
-      { " is-danger": type == "Hawaiian" }
-    )}'>
-
+    const template = `<div  class="notification type-${this.type} ${classNames({
+      "is-danger": this.type === Card.types.HAWAIIAN,
+    })}">
     
   <button class="delete"></button>
   🍕 <span class="type">${type}</span> (<span class="price">${formatCurrency(
