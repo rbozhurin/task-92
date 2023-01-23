@@ -12,28 +12,25 @@ export default class Application extends EventEmitter {
   constructor() {
     super();
 
-    let pizzas = [
+    const pizzas = [
       {
-        type: "Hawaiian",
-        emoji: "🍍",
-        price: 13.99,
+        type: Card.types.HAWAIIAN,
+        price: 8.99,
       },
       {
-        type: "Pepperoni",
-        emoji: "🍕",
-        price: 14.99,
+        type: Card.types.PEPPERONI,
+        price: 9.99,
       },
       {
-        type: "Margherita",
-        emoji: "🍅",
-        price: 11.99,
+        type: Card.types.MARGHERITA,
+        price: 7.99,
       },
     ];
 
     pizzas.forEach((pizza) => {
       const card = new Card({ ...pizza });
       card.render();
-      card.on(Card.events.ADD_TO_CART, (obj) => new Notification().render(obj));
+
       document.querySelector(".main").appendChild(card.container);
     });
 

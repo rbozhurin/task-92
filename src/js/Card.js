@@ -1,43 +1,52 @@
 import classNames from "classnames";
 import EventEmitter from "eventemitter3";
+import Notification from "./Notification";
 
 export default class Card extends EventEmitter {
   static get events() {
     return {
-      ADD_TO_CART: "Added",
-    };
-  }
-  static get types() {
-    return {
-      HAWAIIAN: "Hawaiian",
-      PEPPERONI: "Pepperoni",
-      MARGHERITA: "Margherita",
+      ADD_TO_CART: "add_to_cart",
     };
   }
 
-  constructor({ type, price, emoji }) {
+  static get types() {
+    return {
+      PEPPERONI: "pepperoni",
+      MARGHERITA: "margherita",
+      HAWAIIAN: "hawaiian",
+    };
+  }
+
+  constructor({ type, price }) {
     super();
+
     this._type = type;
     this._price = price;
-    this._emoji = emoji;
 
     this.container = document.createElement("div");
     this.container.classList.add("card-container");
   }
+
   render() {
-    const template = `<div class='card type-${this._type}'>
-        <div class='emoji'>${this._emoji}</div>
-        <span class='type'>${this._type}</span>
-        </div>
-        `;
+    const template = `
+<div class="card type-${this._type} ${classNames({
+      "is-danger": this._type === Card.types.HAWAIIAN,
+    })}">
+  <div class="emoji">🍕</div>
+  <span class="type">${this._type}</span>
+</div>
+    `;
 
     this.container.innerHTML = template;
     this.container.addEventListener("click", () => {
       this.emit(Card.events.ADD_TO_CART, {
         type: this._type,
         price: this._price,
-        emoji: this._emoji,
       });
+    });
+    this.addListener(Card.events.ADD_TO_CART, (args) => {
+      let new_notification = new Notification();
+      new_notification.render(args);
     });
   }
 }
