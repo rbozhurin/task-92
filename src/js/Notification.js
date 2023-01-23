@@ -1,6 +1,5 @@
-let { formatCurrency } = require("./utils");
+import { formatCurrency } from "./utils";
 import classNames from "classnames";
-//import formatCurrency from './utils'
 
 export default class Notification {
   static get types() {
@@ -12,24 +11,33 @@ export default class Notification {
   }
 
   constructor() {
-    this.notification = document.querySelector(".notifications");
     this.container = document.createElement("div");
     this.container.classList.add("notification-container");
+    this.notificationDiv = document.querySelector(".notifications");
   }
 
   render({ type, price }) {
     const template = `
-<div class="${classNames("notification", `type-${type}`)}">
+<div class="notification type-${type} ${classNames({
+      "is-danger": type === "hawaiian",
+    })}">
   <button class="delete"></button>
   🍕 <span class="type">${type}</span> (<span class="price">${formatCurrency(
       price
     )}</span>) has been added to your order.
 </div>
     `;
-
     this.container.innerHTML = template;
-    this.notification.appendChild(this.container);
+    this.notificationDiv.appendChild(this.container);
+    let closeBtns = document.getElementsByClassName("delete");
+    for (const btn of closeBtns) {
+      btn.addEventListener("click", () => {
+        btn.parentElement.remove();
+      });
+    }
+  }
 
-    document.querySelector(".delete").addEventListener("click", () => {});
+  empty() {
+    document.querySelector("notifications").innerHTML = "";
   }
 }
