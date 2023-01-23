@@ -17,6 +17,7 @@ export default class Notification {
   }
 
   render({ type, price }) {
+    debugger;
     const template = `
 <div class="notification type-${type} ${classNames({
       "is-danger": type === "hawaiian",
@@ -27,14 +28,16 @@ export default class Notification {
     )}</span>) has been added to your order.
 </div>
     `;
+
     this.container.innerHTML = template;
     this.notificationDiv.appendChild(this.container);
-    let closeBtns = document.getElementsByClassName("delete");
-    for (const btn of closeBtns) {
-      btn.addEventListener("click", () => {
-        btn.parentElement.remove();
-      });
-    }
+    let button = this.container.querySelector(".delete");
+
+    button.addEventListener("click", () => this.onDelete());
+  }
+
+  onDelete() {
+    this.notificationDiv.removeChild(this.container);
   }
 
   empty() {
