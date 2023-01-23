@@ -21,10 +21,11 @@ export default class Notification {
   }
 
   render({ type, price }) {
-    const template = `
-<div class="${classNames("notification", `type-${type}`, {
-      "is-danger": type === "hawaiian" ? true : false,
-    })}">
+    const template = `<div class='notification type-${type.toLowerCase()}${classNames(
+      { " is-danger": type == "Hawaiian" }
+    )}'>
+
+    
   <button class="delete"></button>
   🍕 <span class="type">${type}</span> (<span class="price">${formatCurrency(
       price
