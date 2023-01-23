@@ -1,5 +1,6 @@
-import { formatCurrency } from "./utils";
+let { formatCurrency } = require("./utils");
 import classNames from "classnames";
+//import formatCurrency from './utils'
 
 export default class Notification {
   static get types() {
@@ -11,26 +12,24 @@ export default class Notification {
   }
 
   constructor() {
+    this.notification = document.querySelector(".notifications");
     this.container = document.createElement("div");
     this.container.classList.add("notification-container");
-
-    this.container.addEventListener("click", this.render);
-    // this.render();
-  }
-  deleteContent() {
-    this.container.innerHTML = "";
   }
 
-  render(price, type) {
+  render({ type, price }) {
     const template = `
-<div class="notification type-${type}">
+<div class="${classNames("notification", `type-${type}`)}">
   <button class="delete"></button>
-  🍕 <span class="type">pepperoni</span> (<span class="price">${formatCurrency(
-    price
-  )}</span>) has been added to your order.
+  🍕 <span class="type">${type}</span> (<span class="price">${formatCurrency(
+      price
+    )}</span>) has been added to your order.
 </div>
     `;
 
     this.container.innerHTML = template;
+    this.notification.appendChild(this.container);
+
+    document.querySelector(".delete").addEventListener("click", () => {});
   }
 }
