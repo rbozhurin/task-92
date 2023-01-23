@@ -1,6 +1,5 @@
 import { formatCurrency } from "./utils";
 import classNames from "classnames";
-
 export default class Notification {
   static get types() {
     return {
@@ -12,8 +11,10 @@ export default class Notification {
 
   constructor() {
     this.container = document.createElement("div");
-    this.notification = document.querySelector(".notifications");
     this.container.classList.add("notification-container");
+    if (this._type === Notification.types.HAWAIIAN) {
+      this.container.classList.add("is-danger");
+    }
   }
 
   empty() {
@@ -21,22 +22,22 @@ export default class Notification {
   }
 
   render({ type, price }) {
-    const template = `<div  class="notification type-${this.type} ${classNames({
-      "is-danger": this.type === Card.types.HAWAIIAN,
-    })}">
-    
-  <button class="delete"></button>
-  🍕 <span class="type">${type}</span> (<span class="price">${formatCurrency(
+    const isHawaiian = type === Notification.types.HAWAIIAN;
+    // questionable requirement ${isHawaiian ? " is-danger" : ""}
+    const cNames = classNames(`notification type-${type}`, {
+      "is-danger": isHawaiian,
+    });
+    const template = `
+      <div class="${cNames}">
+        <button class="delete"></button>
+        🍕 <span class="type">${type}</span> (<span class="price">${formatCurrency(
       price
     )}</span>) has been added to your order.
-</div>
+      </div>
     `;
 
     this.container.innerHTML = template;
-    this.notification.appendChild(this.container);
-
-    this.container.querySelector(".delete").addEventListener("click", () => {
-      this.empty();
-    });
+    const deleteButton = this.container.querySelector(".delete");
+    deleteButton.onclick = () => this.empty();
   }
 }
