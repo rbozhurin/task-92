@@ -23,7 +23,7 @@ export default class Notification {
 
   render({ type, price }) {
     const isHawaiian = type === Notification.types.HAWAIIAN;
-    // questionable requirement ${isHawaiian ? " is-danger" : ""}
+
     const cNames = classNames(`notification type-${type}`, {
       "is-danger": isHawaiian,
     });
