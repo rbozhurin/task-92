@@ -12,31 +12,31 @@ export default class Application extends EventEmitter {
   constructor() {
     super();
 
-    const pizzas = [
+    let pizzas = [
       {
-        type: Card.types.HAWAIIAN,
-        price: 8.99,
+        type: "Hawaiian",
+        emoji: "🍍",
+        price: 13.99,
       },
       {
-        type: Card.types.PEPPERONI,
-        price: 9.99,
+        type: "Pepperoni",
+        emoji: "🍕",
+        price: 14.99,
       },
       {
-        type: Card.types.MARGHERITA,
-        price: 7.99,
+        type: "Margherita",
+        emoji: "🍅",
+        price: 11.99,
       },
     ];
 
     pizzas.forEach((pizza) => {
-      const card = new Card({
-        ...pizza,
-      });
+      const card = new Card({ ...pizza });
       card.render();
-      card.on(Card.events.ADD_TO_CART, (obj) => {
-        new Notification().render(obj);
-      });
+      card.on(Card.events.ADD_TO_CART, (obj) => new Notification().render(obj));
       document.querySelector(".main").appendChild(card.container);
     });
+
     this.emit(Application.events.READY);
   }
 }
